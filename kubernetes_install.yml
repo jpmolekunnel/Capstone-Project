@@ -1,0 +1,44 @@
+---
+ - name: Setup Kubernetes
+   hosts: localhost
+   become: yes
+   tasks:
+     - name: Install Kubernetes dependencies
+       include: kube_dependency.yml
+
+     - name: update apt
+       apt:
+         update_cache: yes
+
+     - name: Install Kubelet
+       apt:
+         name: kubelet
+         state: latest
+         update_cache: yes
+
+     - name: Install kubeadm
+       apt:
+         name: kubeadm
+         state: latest
+         update_cache: yes
+
+     - name: Install kubectl
+       apt:
+         name: kubectl
+         state: latest
+         update_cache: yes
+
+     - name: Hold Kubernetes
+       shell: |
+              sudo apt-mark hold kubelet kubeadm kubectl
+       register: hold
+
+     - debug:
+         var: hold.stdout_lines 
+
+     - name: containerd status
+       shell: sudo systemctl status containerd
+       register: containerd_status
+
+     - debug:
+         var: containerd_status.stdout_lines
