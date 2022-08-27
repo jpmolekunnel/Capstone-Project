@@ -1,0 +1,62 @@
+---
+ - name: Setup Docker
+   hosts: myinfra
+   become: yes
+   tasks:
+     - name: Install docker dependencies
+       include: docker_dependency.yml
+
+     - name: update apt
+       apt:
+         update_cache: yes
+
+     - name: Install docker
+       apt:
+         name: docker-ce
+         state: latest
+         update_cache: yes
+
+     - name: Install docker cli
+       apt:
+         name: docker-ce-cli
+         state: latest
+         update_cache: yes
+
+     - name: Install container
+       apt:
+         name: containerd.io
+         state: latest
+         update_cache: yes
+
+     - name: Install docker-compose-plugin
+       apt:
+         name: docker-compose-plugin
+         state: latest
+         update_cache: yes
+
+     - name: Service status - docker
+       service:
+         name: docker
+         state: started
+
+     - name: docker ps -a
+       shell: sudo docker ps -a
+       register: docker_ps
+
+     - debug:
+         var: docker_ps.stdout_lines
+
+     - name: Run Hello World
+       shell: sudo docker run hello-world
+       register: docker_run
+
+     - debug:
+         var: docker_run.stdout_lines
+
+     - name: docker ps -a run
+       shell: sudo docker ps -a
+       register: docker_ps_run
+
+     - debug:
+         var: docker_ps_run.stdout_lines
+
