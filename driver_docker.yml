@@ -1,0 +1,33 @@
+---
+ - name: Setup Docker
+   hosts: myinfra
+   become: yes
+
+   tasks:
+
+     - name: Set system configurations for Kubernetes networking
+       file:
+          path: "/etc/docker/daemon.json"
+          state: "touch"
+
+     - name: copy json script
+       template: 
+         src: daemon.json 
+         dest: "/etc/docker/daemon.json"
+
+     - name: enable docker
+       shell: sudo systemctl enable docker
+       register: docker_status
+
+     - debug:
+         var: docker_status.stdout_lines
+
+     - name: force systemd to reread
+       systemd: daemon_reload=yes
+
+     - name: restart docker
+       shell: sudo systemctl restart docker
+
+     - name: Make the Swap inactive
+       command: swapoff -a
+
