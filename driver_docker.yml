@@ -31,3 +31,12 @@
      - name: Make the Swap inactive
        command: swapoff -a
 
+     - name: Delete file
+       file:
+          path: "/etc/containerd/config.toml"
+          state: absent
+
+     - name: Restart containerd
+       shell: sudo systemctl restart containerd
+
+
