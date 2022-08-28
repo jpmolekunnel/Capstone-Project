@@ -1,6 +1,6 @@
 ---
  - name: Setup Kubernetes
-   hosts: localhost
+   hosts: myinfra
    become: yes
    tasks:
      - name: Install Kubernetes dependencies
