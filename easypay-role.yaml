@@ -1,0 +1,9 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:       
+   namespace: easypay
+   name: easypayusr-role    
+rules:
+- apiGroups: ["", "extensions", "apps"]    
+  resources: ["deployments", "pods", "services"]
+  verbs: ["get", "list", "create", "update", "delete"]

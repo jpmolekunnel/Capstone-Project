@@ -1,0 +1,38 @@
+---
+ - name: Setup Application 
+   hosts: localhost
+   become: yes
+   tasks:
+
+     - name: update apt
+       apt:
+         update_cache: yes
+
+     - name: Install default-jre
+       apt:
+         name: default-jre
+         state: latest
+         update_cache: yes
+
+     - name: Install default-jdk
+       apt:
+         name: default-jdk
+         state: latest
+         update_cache: yes
+
+     - name: Install maven
+       apt:
+         name: maven
+         state: latest
+         update_cache: yes
+
+     - name: Check Versions
+       shell: |
+              java -version
+              javac -version
+              mvn -version
+       register: version
+
+     - debug:
+         var: version.stdout_lines
+

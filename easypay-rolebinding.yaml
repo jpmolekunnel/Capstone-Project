@@ -1,0 +1,13 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+ name: easypay-rolebinding
+ namespace: easypay
+subjects:
+- kind: User
+  name: easypayusr
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: easypayusr-role
+  apiGroup: ""
